@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+            table.outer{
+                width: 100%;
+            }
+            table.nested{
+                width: 100%;
+            }
+            #tableName{
+                border: 1px solid black;
+
+                text-align: center;
+            }
+
+            td.outer{
+                width: 33%;
+                border-bottom: 1px solid black;
+                border-left: 1px solid black;
+                text-align: center;
+            }
+            td.outer_trailing{
+                width: 33%;
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                border-bottom: 1px solid black;
+                text-align: center;
+            }
+            td.nested{
+                border-right: 1px solid black;
+                text-align: center;
+            }
+            td.nested_trailing{
+                text-align: center;
+
+            }
+            tr.outer{
+
+
+            }
+            tr.nested{
+                
+            }
+
+            
+        </style>
+    </head>
+    
+    <body>
+        <table class="outer">
+            <tr class="outer" id="name">
+                <th id="tableName" colspan="100">ObjName</th>
+            </tr>     
+
+            <tr class="outer" >
+                <td class="outer">type</td>
+                <td class="outer_trailing" colspan="100">class</td>
+            </tr>
+
+            <tr class="outer">
+                <td class="outer">props</td>
+                <td class="outer_trailing" colspan="100">
+                    <table class="nested">
+                        <tr class="nested">
+                            <td class="nested" style="border-bottom: 1px solid black;">something</td>
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">10</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested" style="border-bottom: 1px solid black;">something_else</td>
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">12</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested" style="border-bottom: 1px solid black;">something_old</td>
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">15</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested">something_new</td>
+                            <td class="nested_trailing">55</td>
+                        </tr>
+                        
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="outer">
+                <td class="outer">methods</td>
+                <td class="outer_trailing" colspan="100">
+                    <table class="nested">
+                        <tr class="nested">
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">get_something()</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">get_something_else()</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested_trailing" style="border-bottom: 1px solid black;">get_something_old()</td>
+                        </tr>
+                        <tr class="nested">
+                            <td class="nested_trailing">get_something_new()</td>
+                        </tr>
+                        
+                    </table>
+                </td>
+            </tr>
+
+          </table>
+    </body>
+</html>
