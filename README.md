@@ -5,7 +5,7 @@ In the future, it will professionalize with community support
 
 ![2c607-sea-serpent](https://user-images.githubusercontent.com/107733608/174912964-77b2a004-4cb4-4c82-b166-39f361dd4562.jpg)
 
-Hydrarchy looks at the following Hydra Schema, and ignores any plugin code, unless it uses Hydrarchy plugs
+Hydrarchy looks at the following Hydra Schema, and ignores any plugin code, unless it publishes to Hydrarchy plugs api
 ## Schema:
     {
     @/some/path/to/cool.hydra import CoolObject as Cool
