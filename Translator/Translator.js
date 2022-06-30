@@ -4,22 +4,24 @@ var acorn = require("acorn");
 const fsWalk = require('@nodelib/fs.walk');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var sourcemaps = require('gulp-sourcemaps');
+const glob = require("glob");
 
 
 class Source{
     constructor(dir){
         this.dir = dir
-        this.result = this.sourceMerge()
+        this.result = this.sourceMerge(dir)
         //this.parsed = this.parseIt()
         //console.log(this.parsed)
         
     }
-    async sourceMerge(){
-
-        await new Promise((resolve, reject)=>{
-            gulp.src("./*.js")
+    async sourceMerge(dir){
+        var paths = this.paths(dir)
+        return await new Promise((resolve, reject)=>{
+            gulp.src(dir+"**/*.js")
                 .pipe(concat('all.js'))
-                .pipe(gulp.dest("./merged.js"))
+                .pipe(gulp.dest("./merged/"))
                 .on("finish", resolve)
                 .on("error", reject)
         });
@@ -85,4 +87,4 @@ class Translator{
 
 }
 
-var source = new Source('./')
+var source = new Source('../node_modules/')
