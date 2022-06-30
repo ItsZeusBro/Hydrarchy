@@ -1,53 +1,66 @@
 //This file watches your src folder and tries to translate
 //all source files on the fly to produce a Hydrarchy.json file
-var acorn = require("acorn");
-const fsWalk = require('@nodelib/fs.walk');
+var {Parser} = require("acorn");
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+const fs = require("fs");
+const classFields = require('acorn-class-fields');
 
 
 
 class Source{
-    constructor(dir){
+    constructor(dir, output_dir, file){
         this.dir = dir
-        this.result = this.sourceMerge(dir)
-        //this.parsed = this.parseIt()
-        //console.log(this.parsed)
+        this.result = this.sourceMerge(dir, output_dir, file)
+        this.parsed = this.parseIt(output_dir+file)
+        console.log(this.parsed)
         
     }
-    async sourceMerge(dir){
-        var paths = this.paths(dir)
+    async sourceMerge(dir, output_dir, file){
         return await new Promise((resolve, reject)=>{
             gulp.src([  dir+'*/*.js',                 //select all files
                         '!'+dir+'node_modules/',      //exclude folders starting with '_'
                         '!'+dir+'node_modules/**/*'   //exclude sub directories for node modules
                 ])     
-                .pipe(concat('all.js'))
-                .pipe(gulp.dest("./merged/"))
+                .pipe(concat(file))
+                .pipe(gulp.dest(output_dir))
                 .on("finish", resolve)
                 .on("error", reject)
         });
+    
         
     }
-    paths(dir){
-        //takes files in directory and writes them all into a single file
-        var filepaths=[]
-        fsWalk.walk(dir, (error, entries) => {
-            entries.forEach(element => {
-              if (element.path.split('.').pop() == "js")
-              filepaths.push(element.path)
-            });
-          });
-        var outputPath = './merged.js'
-    
-        return filepaths
+   
+    parseIt(output){
 
-    }
-    parseIt(){
-        return acorn.parse(this.sourced, {ecmaVersion: 2020})
+        const buffer = fs.readFileSync(output);
+        const fileContent = buffer.toString();
+        Parser.extend(classFields).parse(fileContent).body.forEach(element=>{
+            if (element.type=="ClassDeclaration"){
+                console.log(element)
+            }
+        })
+        // var tokens = [...acorn.tokenizer(fileContent, {ecmaVersion: 2020})];
+        // include=false
+        // var classtokens=[]
+        // tokens.forEach(element => {
+        //     if(element.type.label == 'class'){
+        //         include = true
+
+        //     }else{
+        //         if(include==true){
+        //             //this means push to class tokens and keep include == to true
+        //         }else{
+        //             //this means
+
+        //         }
+        //     }
+
+        // });
+
+        return //acorn.parse(this.sourced, , sourceFile:})
     }
     next(){
-        //
 
     }
 }
@@ -89,4 +102,4 @@ class Translator{
 
 }
 
-var source = new Source('../')
+var source = new Source('../', "./merged/", 'all.js')

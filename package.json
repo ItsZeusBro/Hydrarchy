@@ -19,6 +19,7 @@
   "dependencies": {
     "@nodelib/fs.walk": "^1.2.8",
     "acorn": "^8.7.1",
+    "acorn-class-fields": "^1.0.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1"
   }
