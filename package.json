@@ -1,0 +1,19 @@
+{
+  "name": "hydrarchy",
+  "version": "1.0.0",
+  "description": "![2c607-sea-serpent](https://user-images.githubusercontent.com/107733608/174912964-77b2a004-4cb4-4c82-b166-39f361dd4562.jpg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItsZeusBro/Hydrarchy.git"
+  },
+  "author": "Hassan Amad (aka Zeus)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/ItsZeusBro/Hydrarchy/issues"
+  },
+  "homepage": "https://github.com/ItsZeusBro/Hydrarchy#readme"
+}
