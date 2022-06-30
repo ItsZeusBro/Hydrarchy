@@ -9,14 +9,12 @@ var concat = require('gulp-concat');
 class Source{
     constructor(dir){
         this.dir = dir
-        this.paths = this.paths(dir)
-        this.result = this.sourceMerge(this.paths)
-        console.log(this.result)
+        this.result = this.sourceMerge()
         //this.parsed = this.parseIt()
         //console.log(this.parsed)
         
     }
-    async sourceMerge(filepaths){
+    async sourceMerge(){
 
         await new Promise((resolve, reject)=>{
             gulp.src("./*.js")
