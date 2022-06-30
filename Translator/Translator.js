@@ -35,9 +35,21 @@ class Source{
 
         const buffer = fs.readFileSync(output);
         const fileContent = buffer.toString();
+        var classContentArray=[]
         Parser.extend(classFields).parse(fileContent).body.forEach(element=>{
             if (element.type=="ClassDeclaration"){
-                console.log(element)
+                var buffer = new Buffer.alloc(100000);
+                fs.open(output, "r+", function (err, fd){
+                    if(err){
+                        console.log(err)
+                    }
+                    console.log("reading from file")
+                    fs.read(fd, buffer, 0, element.body.end-element.body.start, element.body.start, function (err, bytes){
+                        classContentArray.push(buffer.toString())
+                        console.log(buffer.toString())
+
+                    })
+                })
             }
         })
         // var tokens = [...acorn.tokenizer(fileContent, {ecmaVersion: 2020})];
