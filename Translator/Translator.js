@@ -11,67 +11,52 @@ const classFields = require('acorn-class-fields');
 class Source{
     constructor(dir, output_dir, file){
         this.dir = dir
-        this.result = this.sourceMerge(dir, output_dir, file)
-        this.parsed = this.parseIt(output_dir+file)
-        console.log(this.parsed)
+        this.sourceMerge(dir, output_dir, file)
+        this.contentArray=[]
+        this.parseIt(output_dir+file)
+
         
     }
-    async sourceMerge(dir, output_dir, file){
-        return await new Promise((resolve, reject)=>{
-            gulp.src([  dir+'*/*.js',                 //select all files
-                        '!'+dir+'node_modules/',      //exclude folders starting with '_'
-                        '!'+dir+'node_modules/**/*'   //exclude sub directories for node modules
-                ])     
-                .pipe(concat(file))
-                .pipe(gulp.dest(output_dir))
-                .on("finish", resolve)
-                .on("error", reject)
-        });
-    
-        
+    sourceMerge(dir, output_dir, file){
+        gulp.src([  dir+'*/*.js',                 //select all files
+                    '!'+dir+'node_modules/',      //exclude folders starting with '_'
+                    '!'+dir+'node_modules/**/*'   //exclude sub directories for node modules
+        ])     
+        .pipe(concat(file))
+        .pipe(gulp.dest(output_dir))
     }
    
     parseIt(output){
 
         const buffer = fs.readFileSync(output);
         const fileContent = buffer.toString();
-        var classContentArray=[]
-        Parser.extend(classFields).parse(fileContent).body.forEach(element=>{
-            if (element.type=="ClassDeclaration"){
-                var buffer = new Buffer.alloc(100000);
-                fs.open(output, "r+", function (err, fd){
-                    if(err){
-                        console.log(err)
-                    }
-                    console.log("reading from file")
-                    fs.read(fd, buffer, 0, element.body.end-element.body.start, element.body.start, function (err, bytes){
-                        classContentArray.push(buffer.toString())
-                        console.log(buffer.toString())
 
-                    })
-                })
+        this.contentArray=[]
+        Parser.extend(classFields).parse(fileContent).body.forEach(
+            element=>{
+                if (element.type=="ClassDeclaration"){
+
+                    var buffer = new Buffer.alloc(100000);
+                    var buffer_offset=0
+                    var fd = fs.openSync(output, "r+")
+                    fs.readSync(
+                        fd, 
+                        buffer, 
+                        buffer_offset, 
+                        element.body.end-element.body.start, 
+                        element.body.start, 
+                    )
+                    buffer_offset+=element.body.end-element.body.start
+                    this.contentArray.push(element.id.name+(buffer.toString('utf-8',0,buffer_offset-1)))
+                    
+                }
             }
-        })
-        // var tokens = [...acorn.tokenizer(fileContent, {ecmaVersion: 2020})];
-        // include=false
-        // var classtokens=[]
-        // tokens.forEach(element => {
-        //     if(element.type.label == 'class'){
-        //         include = true
+        );
+        return
 
-        //     }else{
-        //         if(include==true){
-        //             //this means push to class tokens and keep include == to true
-        //         }else{
-        //             //this means
-
-        //         }
-        //     }
-
-        // });
-
-        return //acorn.parse(this.sourced, , sourceFile:})
     }
+
+    
     next(){
 
     }
@@ -115,3 +100,4 @@ class Translator{
 }
 
 var source = new Source('../', "./merged/", 'all.js')
+console.log(source.contentArray)
